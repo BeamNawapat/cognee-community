@@ -57,7 +57,13 @@ class QDrantAdapter(VectorDBInterface):
         qdrant_path=None,
         database_name: str = "cognee_db",
         timeout: int = 120,
+        **kwargs,
     ):
+        # cognee's vector engine factory forwards connection details it already holds
+        # (vector_db_host/port/username/password) to registry adapters. Qdrant reaches its
+        # store through the single `url` (which carries host:port), so it neither needs nor
+        # reads those fields — accept and ignore them so the forwarded call can't raise
+        # "unexpected keyword argument" on a cognee build that passes them.
         self.embedding_engine = embedding_engine
         self.database_name = database_name
         self.timeout = timeout

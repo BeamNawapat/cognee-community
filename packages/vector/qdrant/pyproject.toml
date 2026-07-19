@@ -1,12 +1,16 @@
 [project]
 name = "cognee-community-vector-adapter-qdrant"
-version = "0.3.0"
+version = "0.3.1"
 description = "Qdrant vector database adapter for cognee"
 readme = "README.md"
 requires-python = ">=3.11,<=3.13"
 dependencies = [
     "qdrant-client>=1.18.0",
-    "cognee==1.1.0",
+    # Was pinned to the exact 1.1.0 it was first written against; that exact pin
+    # forces a downgrade when the adapter is installed into a newer cognee (e.g. 1.4.0),
+    # silently reverting the app. The VectorDBInterface surface this adapter implements
+    # (9 abstract methods) is unchanged across the 1.x line, so widen to the range.
+    "cognee>=1.1.0,<2.0.0",
     "starlette>=0.48.0",
     "instructor>=1.11"
 ]
